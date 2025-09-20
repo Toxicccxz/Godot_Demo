@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=4 uid="uid://dxd4f8f0oijg5"]
+[gd_scene load_steps=12 format=4 uid="uid://dxd4f8f0oijg5"]
 
 [ext_resource type="Texture2D" uid="uid://dwcaua1grd200" path="res://art/tilesets/plains.png" id="1_4wyf3"]
+[ext_resource type="Script" uid="uid://p88wx3rho2n3" path="res://scripts/world.gd" id="1_qfnet"]
 [ext_resource type="Texture2D" uid="uid://dj8v3xeleuwr7" path="res://art/tilesets/grass.png" id="2_k0juu"]
 [ext_resource type="Texture2D" uid="uid://cvoksd7t7asd1" path="res://art/objects/objects.png" id="3_71j4m"]
 [ext_resource type="PackedScene" uid="uid://caanjy8jbnysq" path="res://scenes/player.tscn" id="4_k0juu"]
@@ -75,8 +76,12 @@ sources/0 = SubResource("TileSetAtlasSource_qfnet")
 sources/1 = SubResource("TileSetAtlasSource_i7141")
 sources/2 = SubResource("TileSetAtlasSource_4mrxx")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_71j4m"]
+size = Vector2(28, 17)
+
 [node name="world" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_qfnet")
 
 [node name="ground" type="TileMapLayer" parent="."]
 use_parent_material = true
@@ -99,3 +104,18 @@ position = Vector2(206, 105)
 
 [node name="enemy" parent="." instance=ExtResource("5_71j4m")]
 position = Vector2(108, 118)
+
+[node name="collisions" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="collisions"]
+position = Vector2(-1, 0)
+polygon = PackedVector2Array(3, 0, 181, 0, 181, -17, 209, -17, 209, 0, 258, 0, 258, 33, 291, 33, 291, 48, 417, 48, 417, 192, 1, 192, 1, -2, -1, 6, -1, 194, 421, 194, 421, -4, 195, -23)
+
+[node name="cliffside_transition_point" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cliffside_transition_point"]
+position = Vector2(194, -8.5)
+shape = SubResource("RectangleShape2D_71j4m")
+
+[connection signal="body_entered" from="cliffside_transition_point" to="." method="_on_cliffside_transition_point_body_entered"]
+[connection signal="body_exited" from="cliffside_transition_point" to="." method="_on_cliffside_transition_point_body_exited"]
