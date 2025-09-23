@@ -7,11 +7,14 @@ func _process(delta: float) -> void:
 
 func _on_cliffside_transition_point_body_entered(body: Node2D):
 	if body.has_method("player"):
+		print("enter cliff and has player")
 		Global.transition_scene = true
+		print(Global.transition_scene)
 
 func _on_cliffside_transition_point_body_exited(body: Node2D):
 	if body.has_method("player"):
-		Global.transition_scene = false
+		print("exit cliff and has player")
+		#Global.transition_scene = false
 
 func change_scenes():
 	if Global.transition_scene == true:
